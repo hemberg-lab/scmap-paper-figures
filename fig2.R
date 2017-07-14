@@ -46,26 +46,53 @@ original_labs <- as.character(read.csv("data/fig2b-orig-labs.csv")[,1])
 rownames(similarities) <- similarities[,1]
 rownames(labels) <- labels[,1]
 
+# logicals <- lapply(as.list(as.data.frame(t(similarities[,-1:-2]))), function(x){
+#     !is.na(x) & x > 0.7
+# })
+# 
+# consensus_labs1 <- mapply(function(x, y) {
+#         tmp <- as.character(x)[y]
+#         names(tmp) <- names(x)[y]
+#         return(tmp)
+#     },
+#     as.list(as.data.frame(t(labels[,-1:-2]))),
+#     logicals
+# )
+# 
+# consensus_labs2 <- lapply(consensus_labs1, function(x) {
+#         if (length(unique(x)) == 1) {
+#             return(x[1])
+#         } else {
+#             return(NA)
+#         }
+#     }
+# )
+
 logicals <- lapply(as.list(as.data.frame(t(similarities[,-1:-2]))), function(x){
-    !is.na(x) & x > 0.7
-})
-
-consensus_labs1 <- mapply(function(x, y) {
-        tmp <- as.character(x)[y]
-        names(tmp) <- names(x)[y]
-        return(tmp)
-    },
-    as.list(as.data.frame(t(labels[,-1:-2]))),
-    logicals
-)
-
-consensus_labs2 <- lapply(consensus_labs1, function(x) {
-        if (length(unique(x)) == 1) {
-            return(x[1])
+    # !is.na(x) & x > 0.7
+    tmp <- which.max(x)
+    if (length(tmp) != 0) {
+        if (x[tmp] >= 0.7) {
+            return(tmp)
         } else {
             return(NA)
         }
+    } else {
+        return(NA)
     }
+})
+
+consensus_labs1 <- mapply(function(x, y) {
+        if (!is.na(y)) {
+            tmp <- as.character(x)[y]
+            names(tmp) <- names(x)[y]
+            return(tmp)
+        } else {
+            return(NA)
+        }
+    },
+    as.list(as.data.frame(t(labels[,-1:-2]))),
+    logicals
 )
 
 plot(scmap::getSankey(original_labs, labels$xin, plot_width = 300, plot_height = 300))
