@@ -44,31 +44,31 @@ pos_ctrls <- read.csv("data/fig1cd.csv")
 pos_ctrls$n_features <- factor(pos_ctrls$n_features, levels = c("0-100", "100-200", "200-500", "500-1000", "1000-2000", "2000-5000", "ALL"))
 pos_ctrls$Method <- factor(pos_ctrls$Method, levels = c("scmap", "SVM", "RF"))
 
-p_s2 <- ggplot(pos_ctrls, aes(n_features, kappa, fill = Method)) +
+p_s2a <- ggplot(pos_ctrls, aes(n_features, kappa, fill = Method)) +
     geom_boxplot(size = 0.1, width = 0.5, position = position_dodge(width = 0.7), outlier.size = 0.2) +
     facet_grid(threshold ~ .) +
-    scale_fill_manual(values = cols) +
+    scale_fill_manual(values = cols, guide = guide_legend()) +
     theme_classic() +
     theme(axis.line=element_blank(), 
+          legend.position = "top",
           strip.background = element_rect(colour = "white"),
           axis.text.x=element_text(angle = -30, hjust = 0)) +
     annotate("segment", x=0, xend=Inf, y=0, yend=0, color = "black") +
     annotate("segment", x=0, xend=0, y=-Inf, yend=Inf, color = "black") +
     labs(x = "Number of features", y = "Cohen's Kappa")
-ggsave(file = "figS2.png", w = 7, h = 10)
 
-p_s3 <- ggplot(pos_ctrls, aes(n_features, uns_rate, fill = Method)) +
+p_s2b <- ggplot(pos_ctrls, aes(n_features, uns_rate, fill = Method)) +
     geom_boxplot(size = 0.1, width = 0.5, position = position_dodge(width = 0.7), outlier.size = 0.2) +
-    scale_fill_manual(values = cols) +
+    scale_fill_manual(values = cols, guide = guide_legend()) +
     facet_grid(threshold ~ .) +
     theme_classic() +
     theme(axis.line=element_blank(), 
+          legend.position = "top",
           strip.background = element_rect(colour = "white"),
           axis.text.x=element_text(angle = -30, hjust = 0)) +
     annotate("segment", x=0, xend=Inf, y=0, yend=0, color = "black") +
     annotate("segment", x=0, xend=0, y=-Inf, yend=Inf, color = "black") +
     labs(x = "Number of features", y = "% of unassigned cells")
-ggsave(file = "figS3.png", w = 7, h = 10)
 
 p_1c <- ggplot(pos_ctrls[pos_ctrls$threshold == 0.7, ], aes(n_features, kappa, fill = Method)) +
     geom_boxplot(size = 0.1, width = 0.5, position = position_dodge(width = 0.7), outlier.size = 0.2) +
@@ -110,21 +110,22 @@ p_1e <- ggplot(neg_ctrls[neg_ctrls$threshold == 0.7, ], aes(n_features, uns_rate
     annotate("segment", x=0, xend=0, y=-Inf, yend=Inf, color = "black") +
     labs(x = "Number of features", y = "% of unassigned cells")
 
-p_s4 <- ggplot(neg_ctrls, aes(n_features, uns_rate, fill = Method)) +
+p_s2c <- ggplot(neg_ctrls, aes(n_features, uns_rate, fill = Method)) +
     geom_boxplot(size = 0.1, width = 0.5, position = position_dodge(width = 0.7), outlier.size = 0.2) +
     facet_grid(threshold ~ .) +
-    scale_fill_manual(values = cols) +
+    scale_fill_manual(values = cols, guide = guide_legend()) +
     theme_classic() +
     theme(axis.line=element_blank(), 
+          legend.position = "top",
           strip.background = element_rect(colour = "white"),
           axis.text.x=element_text(angle = -30, hjust = 0)) +
     annotate("segment", x=0, xend=Inf, y=0, yend=0, color = "black") +
     annotate("segment", x=0, xend=0, y=-Inf, yend=Inf, color = "black") +
     labs(x = "Number of features", y = "% of unassigned cells")
-ggsave(file = "figS4.png", w = 7, h = 10)
+
+plot_grid(p_s2a, p_s2b, p_s2c, nrow = 1, labels = c("a", "b", "c"))
+ggsave("figS2.png", w = 9, h = 6)
 
 second_row <- plot_grid(p_1c, p_1d, p_1e, nrow = 1, labels = c("c", "d", "e"))
-
 plot_grid(plot_grid(NULL, NULL, nrow = 1, labels = c("a", "b")), second_row, ncol = 1, rel_heights = c(2.3, 2))
-
 ggsave("fig1.pdf", w = 9, h = 6)
