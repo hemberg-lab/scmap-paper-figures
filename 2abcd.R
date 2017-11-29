@@ -49,45 +49,9 @@ ggsave("pdf/2abcd.pdf", w = 9, h = 6)
 ggsave("jpeg/2abcd.jpeg", w = 9, h = 6)
 
 
-similarities <- read.csv("data/fig2cd-sims.csv")
-labels <- read.csv("data/fig2cd-labs.csv")
-original_labs <- as.character(read.csv("data/fig2cd-orig-labs.csv")[,1])
-rownames(similarities) <- similarities[,1]
-rownames(labels) <- labels[,1]
-
-logicals <- lapply(as.list(as.data.frame(t(similarities[,-1:-2]))), function(x){
-    # !is.na(x) & x > 0.7
-    tmp <- which.max(x)
-    if (length(tmp) != 0) {
-        if (x[tmp] >= 0.7) {
-            return(tmp)
-        } else {
-            return(NA)
-        }
-    } else {
-        return(NA)
-    }
-})
-
-consensus_labs1 <- mapply(function(x, y) {
-        if (!is.na(y)) {
-            tmp <- as.character(x)[y]
-            names(tmp) <- names(x)[y]
-            return(tmp)
-        } else {
-            return(NA)
-        }
-    },
-    as.list(as.data.frame(t(labels[,-1:-2]))),
-    logicals
-)
-
-plot(scmap::getSankey(original_labs, labels$xin, plot_width = 300, plot_height = 300))
-# save to 2b.pdf
-
-tmp <- unlist(consensus_labs1)
-kappa2(cbind(original_labs[which(!is.na(tmp))], tmp[which(!is.na(tmp))]))$value
-
-tmp[is.na(tmp)] <- "unassigned"
-plot(scmap::getSankey(original_labs, tmp, plot_width = 300, plot_height = 300))
+labels <- read.csv("data/fig2cd.csv")
+plot(getSankey(labels$original_labs, labels$scmap_cluster, plot_width = 300, plot_height = 300))
 # save to 2c.pdf
+
+plot(getSankey(labels$original_labs, labels$scmap_cell, plot_width = 300, plot_height = 300))
+# save to 2d.pdf

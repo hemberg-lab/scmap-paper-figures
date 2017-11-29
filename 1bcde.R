@@ -13,7 +13,7 @@ neg_ctrls$Method <- factor(neg_ctrls$Method, levels = c("scmap-cluster", "scmap-
 p_1b <- ggplot(pos_ctrls[pos_ctrls$Method != "scmap-cell" & pos_ctrls$threshold == 0.7 | pos_ctrls$Method == "scmap-cell" & pos_ctrls$threshold == 0.5, ], aes(n_features, kappa, fill = Method)) +
     geom_boxplot(size = 0.1, width = 0.5, position = position_dodge(width = 0.7), outlier.size = 0.2) +
     scale_fill_manual(values = cols, guide = guide_legend()) +
-    theme_classic(base_size = 6) +
+    theme_classic(base_size = 8) +
     theme(axis.line=element_blank(), 
           strip.background = element_rect(colour = "white"),
           legend.position = "top",
@@ -26,7 +26,7 @@ p_1b <- ggplot(pos_ctrls[pos_ctrls$Method != "scmap-cell" & pos_ctrls$threshold 
 p_1c <- ggplot(pos_ctrls[pos_ctrls$Method != "scmap-cell" & pos_ctrls$threshold == 0.7 | pos_ctrls$Method == "scmap-cell" & pos_ctrls$threshold == 0.5, ], aes(n_features, uns_rate, fill = Method)) +
     geom_boxplot(size = 0.1, width = 0.5, position = position_dodge(width = 0.7), outlier.size = 0.2) +
     scale_fill_manual(values = cols, guide = guide_legend()) +
-    theme_classic(base_size = 6) +
+    theme_classic(base_size = 8) +
     theme(axis.line=element_blank(),
           legend.position="top",
           legend.key.size = unit(0.22, "cm"),
@@ -39,7 +39,7 @@ p_1c <- ggplot(pos_ctrls[pos_ctrls$Method != "scmap-cell" & pos_ctrls$threshold 
 p_1d <- ggplot(neg_ctrls[neg_ctrls$Method != "scmap-cell" & neg_ctrls$threshold == 0.7 | neg_ctrls$Method == "scmap-cell" & neg_ctrls$threshold == 0.5, ], aes(n_features, uns_rate, fill = Method)) +
     geom_boxplot(size = 0.1, width = 0.5, position = position_dodge(width = 0.7), outlier.size = 0.2) +
     scale_fill_manual(values = cols, guide = guide_legend()) +
-    theme_classic(base_size = 6) +
+    theme_classic(base_size = 8) +
     theme(axis.line=element_blank(), 
           strip.background = element_rect(colour = "white"),
           legend.position = "top",
@@ -59,7 +59,7 @@ p_1e <- ggplot(acc,
              )) +
     geom_boxplot(size = 0.1, width = 0.3, position = position_dodge(width = 0.7), outlier.size = 0.2) +
     # scale_fill_manual(values = cols) +
-    theme_classic(base_size = 6) +
+    theme_classic(base_size = 8) +
     theme(axis.line=element_blank(), 
           strip.background = element_rect(colour = "white"),
           legend.position = "top",
@@ -70,6 +70,6 @@ p_1e <- ggplot(acc,
     guides(fill=guide_legend(title="# of NNs"))
 
 second_col <- plot_grid(p_1b, p_1c, p_1d, p_1e, ncol = 2, labels = c("b", "c", "d", "e"), label_size = 12)
-plot_grid(plot_grid(NULL, nrow = 1, labels = c("a")), second_col, ncol = 2, label_size = 12, rel_widths = c(1, 1.1))
+plot_grid(plot_grid(NULL, nrow = 1, labels = c("a")), second_col, ncol = 2, label_size = 12, rel_widths = c(1, 1.5))
 ggsave("pdf/1bcde.pdf", w = 9, h = 6)
 ggsave("jpeg/1bcde.jpeg", w = 9, h = 6)
