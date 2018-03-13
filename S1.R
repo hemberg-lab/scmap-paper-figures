@@ -31,6 +31,8 @@ p_s1b <- ggplot(self_proj, aes(n_features, kappa, fill = Method)) +
     theme_classic() +
     theme(axis.line=element_blank(), 
           strip.background = element_rect(colour = "white"),
+          legend.position = "bottom",
+          legend.key.size = unit(0.2, "cm"),
           axis.text.x=element_text(angle = -30, hjust = 0)) +
     annotate("segment", x=0, xend=Inf, y=0, yend=0, color = "black") +
     annotate("segment", x=0, xend=0, y=-Inf, yend=Inf, color = "black") +
